@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/18/2023 15:51:33" ReportInfo.Modified="01/18/2023 15:52:54" ReportInfo.CreatorVersion="1.0.0.0">
+  <Styles Name="Standard">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="WhiteSmoke" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqJUrEa/KIcQqhhcfnlqC6PKK8MheP9IEu4gFWCPXnWzFgLjPP39mqhm6WKckRi90qfWFHDc7eZn2VVrd1T5h+ha1DpaTM//QCTObezNYobdRqFbklF6c+UqsuCnow6HxTaJm3sAVrsTflHHQGKjwdpVl72ZKu6PAgw/PUJdEOcVfWtJAfk3LRqSf7BvIiarSRQEw/ERVRRcSUOSjnipDDYQ==">
+      <TableDataSource Name="Players" DataType="System.Int32" Enabled="true" TableName="Players">
+        <Column Name="PlayerId" DataType="System.String"/>
+        <Column Name="slno" DataType="System.String"/>
+        <Column Name="TrainerId" DataType="System.String"/>
+        <Column Name="Description" DataType="System.String"/>
+        <Column Name="Date" DataType="System.DateTime"/>
+        <Column Name="playerlinkPlayerId" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Players" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="718.2" Height="28.35">
+      <TextObject Name="Text3" Width="151.2" Height="18.9" Text="PlayerId" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text5" Left="151.2" Width="141.75" Height="18.9" Text="slno" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text7" Left="292.95" Width="141.75" Height="18.9" Text="TrainerId" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text9" Left="434.7" Width="141.75" Height="18.9" Text="Description" Font="Arial, 10pt, style=Bold" Style="Header"/>
+      <TextObject Name="Text11" Left="576.45" Width="141.75" Height="18.9" Text="Date" Font="Arial, 10pt, style=Bold" Style="Header"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="74.15" Width="718.2" Height="18.9" Condition="[Players.TrainerId]">
+      <TextObject Name="Text12" Width="718.2" Height="18.9" Dock="Fill" Text="[Players.TrainerId]" Font="Arial, 10pt, style=Bold" Style="Group"/>
+      <DataBand Name="Data1" Top="97.05" Width="718.2" Height="18.9" EvenStyle="EvenRows" DataSource="Players">
+        <TextObject Name="Text2" Width="151.2" Height="18.9" Text="[Players.PlayerId]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text4" Left="151.2" Width="141.75" Height="18.9" Text="[Players.slno]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text6" Left="292.95" Width="141.75" Height="18.9" Text="[Players.TrainerId]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text8" Left="434.7" Width="141.75" Height="18.9" Text="[Players.Description]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text10" Left="576.45" Width="141.75" Height="18.9" Text="[Players.Date]" Font="Arial, 10pt" Style="Data"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="119.95" Width="718.2" Height="18.9"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="142.85" Width="718.2" Height="18.9">
+      <TextObject Name="Text13" Width="718.2" Height="18.9" Dock="Fill" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

@@ -1,0 +1,294 @@
+﻿@model CoreNew2.TrainerPlayer_VM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<h4>Sport Info</h4>
+<hr />
+<h2>Trainer Table</h2>
+<div class="row">
+
+    <form asp-action="Index" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label asp-for="TrainerId" class="control-label"></label>
+                    <input asp-for="TrainerId" class="form-control" value="@ViewBag.code" />
+                    <span asp-validation-for="TrainerId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <img id="Image1" class="img-fluid img-thumbnail" />
+                    <input type="file" class="form-control" name="Image" id="Image" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                @*<partial name="_PartialPage" />*@
+
+                <div class="form-group">
+                    <label asp-for="PlayerId" class="control-label"></label>
+                    <input asp-for="PlayerId" class="form-control" value="@ViewBag.code2" />
+                    <span asp-validation-for="PlayerId" id="slerror" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="slno" class="control-label"></label>
+                    <input asp-for="slno" class="form-control" />
+                    <span asp-validation-for="slno" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date" class="control-label"></label>
+                    <input type="date" name="Date" id="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" id="add" value="Add" class="btn btn-primary" />
+                </div>
+            </div>
+            
+            <div class="col-sm-12">
+                <partial name="_PartialPage" />
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<div class="form-group">
+    <div class="col-sm-12">
+        <button type='button' id="save" class="btn btn-lg btn-default btn-primary">Save</button>
+        <button type='button' id="deleteall" class="btn btn-lg btn-default btn-primary">Remove</button>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    $(document).ready(function () {
+        var act = [];
+        var index = -1;
+        $("#PlayerId").keyup(function () {
+            $.ajax('/TP/Child_Exists?id=' + $("#PlayerId").val(),
+                {
+                    data: {},
+                    dataType: 'json',
+                    method: 'get',
+                    timeout: 500,
+                    success: function (data, status, xhr) {
+                        if (data == "1") {
+                            $("#slerror").html("Exists");
+                        }
+                        else {
+                            $("#slerror").html("");
+                        }
+                    }
+                });
+        });
+
+        $("#TrainerId").keyup(function () {
+            getAjax('/TP/GetTrainer/' + $("#TrainerId").val(), function (r) {
+                if (r != "") {
+
+                    $("#Name").val(r[0].Name);
+                    $("#Address").val(r[0].Address);
+                    $('#Image1').attr('src', '/uploads/' + r[0].Image);
+                    if (r[0].Active == 1) {
+                        $('#Active').attr('checked', 'checked');
+                    }
+                    else {
+                        $('#Active').removeAttr('checked');
+                    }
+                }
+                else {
+                    $("#Name").val("");
+                    $("#Address").val("");
+                    $("#Active").val("");
+                }
+                showItems();
+            });
+
+        });
+        function showItems() {
+            getAjax('/TP/GetPlayer/' + $("#TrainerId").val(), function (data) {
+                act = data;
+                items();
+            });
+
+        }
+        function items() {
+            var j = 0;
+            //child table
+            var a = "<table class='table'><tr><th>PlayerId</th><th>slno</th><th>Description</th><th>Date</th><th></th></tr>";
+            for (d in act) {
+                today = ConvertDate(act[d].Date);
+                a += `<tr><td>${act[d].PlayerId}</td><td>${act[d].slno}</td><td>${act[d].Description}</td><td>${today}</td><td><button type='button' onclick="edit1('${act[d].PlayerId}','${act[d].slno}','${act[d].Description}','${today}',${j})">Edit</button><button type='button' onclick="remove(${j})">Remove</button></td></tr>`;
+                j++;
+            }
+            a += "</table>";
+            $("#Player").html(a);
+        }
+        $("#add").click(function () {
+            var dt = $("#Date").val();
+            if ($("#add").val() == "Add") {
+                act.push({ "PlayerId": $("#PlayerId").val(), "slno": $("#slno").val(), "Description": $("#Description").val(), "Date": dt });
+                items();
+            }
+            else {//update
+                v = { "PlayerId": $("#PlayerId").val(), "slno": $("#slno").val(), "Description": $("#Description").val(), "Date": dt };
+                act[index] = v;
+                items();
+                $("#add").val("Add");
+            }
+        });
+        $("#Image").change(function () {
+            previewFile(this)
+        });
+        function previewFile(input) {
+            var file = $("input[type=file]").get(0).files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function () {
+                    $("#Image1").attr("src", reader.result);
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+        $("#save").click(function () {
+            fname = "";
+
+            var d = $("#Image1").attr('src');
+            if (d == '' || d == undefined) {
+                alert("Please select Image");
+                return;
+            }
+            else {
+                var src = $('#Image1').attr('src'); 
+                var arr = src.split('/');      
+                fname = arr[arr.length - 1]; 
+            }
+
+            var i = 0;
+            if ($('#Image').get(0).files.length !== 0) {
+                var files = $("#Image").get(0).files;
+                var fname = files[0].name
+                var fileData = new FormData();
+                fileData.append(files[0].name, files[0]);
+                $.ajax({
+                    url: '/TP/UploadFiles',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        //child table
+
+                    },
+                });
+            }
+            getAjax('/TP/DeleteAll/' + $("#TrainerId").val(), function (d) {
+
+                if ($("#Active").is(":checked") == "true")
+                    a = true;
+                else
+                    a = false;
+                var data1 = {
+                    TrainerId: $("#TrainerId").val(),
+                    Name: $("#Name").val(),
+                    Address: $("#Address").val(),
+                    Active: a,
+                    Image: fname,
+                    playerlink: act
+                };
+                console.log(JSON.stringify(data1));
+                $.ajax({
+                    url: '/TP/InsertDetails',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: "POST",
+                    data: JSON.stringify(data1),
+                    success: function (result) {
+                        alert(result)
+                        if (result == "Error") {
+                            alert("Transaction Error")
+                        }
+                        else
+                            window.location = "/myroute";
+
+                    },
+                });
+
+
+            });
+          
+        });
+        $("#deleteall").click(function () {
+            getAjax('/TP/DeleteAll/' + $("#TrainerId").val(), function (d) {
+                window.location = '/myroute/';//refresh
+            });
+        });
+        remove = function (j) {
+            act.splice(j, 1);
+            items();
+        }
+        edit1 = function (a, b, c, d, e) {
+            $("#add").val("Edit");
+            $("#PlayerId").val(a);
+            $("#slno").val(b);
+            $("#Description").val(c);
+            $("#Date").val(d);
+            index = e;
+        }
+        function ConvertDate(f) {
+            value = new Date(f);
+            var dd = String(value.getDate()).padStart(2, '0');
+            var mm = String(value.getMonth() + 1).padStart(2, '0');
+            var yyyy = value.getFullYear();
+            today = yyyy + "-" + mm + "-" + dd;
+            return today;
+        }
+        function getAjax(url, callback) {
+            $.ajax({
+                dataType: "json",
+                url: url,
+                success: callback
+            });
+        }
+    })
+</script>
+

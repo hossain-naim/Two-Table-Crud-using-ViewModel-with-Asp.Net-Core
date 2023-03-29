@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/18/2023 12:42:28" ReportInfo.Modified="01/18/2023 12:49:18" ReportInfo.CreatorVersion="1.0.0.0">
+  <Styles Name="Green">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="PaleGreen" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="PaleGreen" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="Honeydew" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqJUrEa/KIcQqhhcfnlqC6PKK8MheP9IEu4gFWCPXnWzFgLjPP39mqhm6WKckRi90qfWFHDc7eZn2VVrd1T5h+ha1DpaTM//QCTObezNYobdRqFbklF6c+UqsuCnow6HxTaJm3sAVrsTflHHQGKjwdpVl72ZKu6PAgw/PUJdEOcVfWtJAfk3LRqSf7BvIiarSRC5hyZ7e57xXkOHbXhmrw2Q==">
+      <TableDataSource Name="Trainers" DataType="System.Int32" Enabled="true" TableName="Trainers">
+        <Column Name="TrainerId" DataType="System.String"/>
+        <Column Name="Name" DataType="System.String"/>
+        <Column Name="Address" DataType="System.String"/>
+        <Column Name="Active" DataType="System.Boolean" BindableControl="CheckBox"/>
+        <Column Name="Image" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Trainers" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="41.8" Width="718.2" Height="18.9" Condition="[Trainers.TrainerId]">
+      <TextObject Name="Text12" Width="718.2" Height="18.9" Dock="Fill" Text="                   [Trainers.TrainerId]" Font="Arial, 10pt, style=Bold" Style="Group"/>
+      <DataBand Name="Data1" Top="64.7" Width="718.2" Height="103.95" DataSource="Trainers">
+        <TextObject Name="Text2" Width="75.6" Height="18.9" Fill.Color="PaleGreen" Text="TrainerId" Font="Arial, 10pt, style=Bold" Style="Header"/>
+        <TextObject Name="Text3" Left="75.6" Width="642.6" Height="18.9" Text="[Trainers.TrainerId]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text4" Top="18.9" Width="75.6" Height="18.9" Fill.Color="PaleGreen" Text="Name" Font="Arial, 10pt, style=Bold" Style="Header"/>
+        <TextObject Name="Text5" Left="75.6" Top="18.9" Width="642.6" Height="18.9" Text="[Trainers.Name]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text6" Top="37.8" Width="75.6" Height="18.9" Fill.Color="PaleGreen" Text="Address" Font="Arial, 10pt, style=Bold" Style="Header"/>
+        <TextObject Name="Text7" Left="75.6" Top="37.8" Width="642.6" Height="18.9" Text="[Trainers.Address]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text8" Top="56.7" Width="75.6" Height="18.9" Fill.Color="PaleGreen" Text="Active" Font="Arial, 10pt, style=Bold" Style="Header"/>
+        <TextObject Name="Text9" Left="75.6" Top="56.7" Width="642.6" Height="18.9" Text="[Trainers.Active]" Font="Arial, 10pt" Style="Data"/>
+        <TextObject Name="Text10" Top="75.6" Width="75.6" Height="18.9" Fill.Color="PaleGreen" Text="Image" Font="Arial, 10pt, style=Bold" Style="Header"/>
+        <TextObject Name="Text11" Left="75.6" Top="75.6" Width="642.6" Height="18.9" Text="[Trainers.Image]" Font="Arial, 10pt" Style="Data"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="172.65" Width="718.2" Height="18.9"/>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="195.55" Width="718.2" Height="18.9">
+      <TextObject Name="Text13" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="PaleGreen" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
